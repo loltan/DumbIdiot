@@ -25,10 +25,13 @@ Currently the following checks are implemented:
 # Installation
 
 First you need Hammerspoon (https://www.hammerspoon.org/).
+
 Then just drop the unzipped release (DumbIdiot.spoon) in the ~/.hammerspoon/Spoons folder.
-Finally, edit your your init.lua in ~/.hammerspoon to include the following two lines to start using DumbIdiot:
+
+Finally, edit your init.lua in ~/.hammerspoon to include the following two lines to start using DumbIdiot:
 ```lua 
 hs.loadSpoon("DumbIdiot")
 spoon.DumbIdiot:bindHotKeys({runChecks = {{"ctrl", "alt", "cmd"}, "c"}})
 ```
+
 This will load Dumb Idiot and set the hotkey ```⌃ + ⌥ + ⌘ + c``` to manually run all checks. 
