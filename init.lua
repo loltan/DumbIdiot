@@ -12,7 +12,7 @@ obj.__index = obj
 obj.name = "DumbIdiot"
 obj.version = "0.1"
 obj.author = "Zoltan Madarassy @loltan"
-obj.homepage = "https://github.com/Hammerspoon/Spoons"
+obj.homepage = "https://github.com/loltan/DumbIdiot"
 obj.license = "MIT - https://opensource.org/licenses/MIT"
 
 -------------------------------
@@ -25,6 +25,7 @@ obj.periodicallyClearPasteboard = true
 obj.pasteboardTimer = 1
 -- How often are we running all checks (in minutes)
 obj.checkTimer = 30
+obj.snooze = false
 
 ------------------------------
 -- Required Spoon functions --
@@ -59,7 +60,7 @@ end
 function obj:runChecks()
 	menuItems = {}
 	allGood = true
-
+	
 	if obj.periodicallyClearPasteboard then 
 		table.insert(menuItems, {title = "✅ Automatically clear pasteboard", fn = function() obj.periodicallyClearPasteboard = false end})
 	else
@@ -131,6 +132,30 @@ function obj:runChecks()
 	end
 
 	self:updateMenubar(menuItems, allGood)
+
+	if ((not allGood) and (not obj.snooze)) then
+		self:sendNotification()
+	end
+
+	if allGood then
+		obj.snooze = false
+	end
+end
+
+function obj:snoozeNotifications()
+	hs.alert.show("Dumb Idiot notifications snoozed")
+	obj.snooze = true
+end
+
+function obj:sendNotification()
+	hs.notify.register("Snooze", function() self:snoozeNotifications() end)
+	alert = hs.notify.new(function() self:snoozeNotifications() end)
+	alert:title("Dumb Idiot alert")
+	alert:subTitle("Shit ain't so funky, click the ambulance!")
+	alert:hasActionButton(true)
+	alert:actionButtonTitle("Snooze")
+	alert:withdrawAfter(0)
+	alert:send()
 end
 
 function obj:updateMenubar(menuItems, allGood)
@@ -138,7 +163,7 @@ function obj:updateMenubar(menuItems, allGood)
 	self.menu:setMenu(menuItems)
 	if not allGood then
 		self.menu:setTitle("🚑")
-		hs.notify.show("Dumb Idiot alert", "", "Things ain't so funky")
+		--hs.notify.show("Dumb Idiot alert", "", "Things ain't so funky")
 	else
 		self.menu:setTitle("😎")
 	end
