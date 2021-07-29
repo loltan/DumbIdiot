@@ -10,7 +10,7 @@ obj.__index = obj
 -- Metadata --
 --------------
 obj.name = "DumbIdiot"
-obj.version = "0.1"
+obj.version = "0.2"
 obj.author = "Zoltan Madarassy @loltan"
 obj.homepage = "https://github.com/loltan/DumbIdiot"
 obj.license = "MIT - https://opensource.org/licenses/MIT"
