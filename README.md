@@ -5,8 +5,7 @@ Dumb Idiot is a Hammerspoon Spoon port of snare's idiot (https://github.com/snar
 
 The tool is mostly designed for people who harden their devices but sometimes poke holes in their hardening for a quick test and then forget to turn them back on. 
 
-Dumb Idiot by default runs its checks every 30 minutes and warns you if any of them fail. The warnings include both a notification and changing the menubar icon, which if clicked will give you a list of the failed checks. 
-
+# Checks 
 Currently the following checks are implemented:
 1. Little Snitch
 2. Apache
@@ -22,8 +21,14 @@ Currently the following checks are implemented:
 12. File sharing
 13. Check for static IPs on all network services
 
-# Installation
+# Features
+- Periodic checks: By default Dumb Idiot runs its set of checks every 30 minutes.
+- Notifications: Dumb Idiot will send a persistent notification (until dismissed or snoozed) to the Notification Center. Clicking on the body or the snooze button will disable notifications until the issues are resolved.
+- Menubar icon: If everything is going well, the menubar will have a cool guy emoji, but if issues are found, an ambulance will arrive. Clicking on the ambulance tells you which checks failed via the drop down menu items.
+- Read-only, low privileged user checks: all checks are read-only using low-privileged access (no root or sudo)
+- Hot keys: Optionally a MacOS global key combination can be set to run the checks manually (see instructions below)
 
+# Installation
 First you need Hammerspoon (https://www.hammerspoon.org/).
 
 Then just drop the unzipped release (DumbIdiot.spoon) in the ~/.hammerspoon/Spoons folder.
@@ -35,3 +40,14 @@ spoon.DumbIdiot:bindHotKeys({runChecks = {{"ctrl", "alt", "cmd"}, "c"}})
 ```
 
 This will load Dumb Idiot and set the hotkey ```⌃ + ⌥ + ⌘ + c``` to manually run all checks. 
+
+To get the full value of Dumb Idiot notifications set Hammerspoon's notification style to 'Alerts' in System Preferences -> Notifications -> Hammerspoon
+
+# Planned checks and features
+- TFTP check
+- TCC settings
+- Hosts file entries
+- VPN check
+- More modular checks (each check will be its own file)
+- Config file instead of global variables
+- Bugfixes
