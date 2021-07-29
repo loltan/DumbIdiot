@@ -1,7 +1,7 @@
 # DumbIdiot
 Your best is still an idiot.
 
-Dumb Idiot is a Hammerspoon Spoon port of snare's idiot (https://github.com/snare/idiot) MacOS tool for reminding you not to be stupid. 
+Dumb Idiot is a Hammerspoon port of snare's idiot (https://github.com/snare/idiot) MacOS tool for reminding you not to be stupid with additional checks. 
 
 The tool is mostly designed for people who harden their devices but sometimes poke holes in their hardening for a quick test and then forget to turn them back on. 
 
@@ -33,7 +33,7 @@ First you need Hammerspoon (https://www.hammerspoon.org/).
 
 Then just drop the unzipped release (DumbIdiot.spoon) in the ~/.hammerspoon/Spoons folder.
 
-Finally, edit your init.lua in ~/.hammerspoon to include the following two lines to start using DumbIdiot:
+Finally, edit your init.lua in ~/.hammerspoon to include the following two lines to start using Dumb Idiot:
 ```lua 
 hs.loadSpoon("DumbIdiot")
 spoon.DumbIdiot:bindHotKeys({runChecks = {{"ctrl", "alt", "cmd"}, "c"}})
