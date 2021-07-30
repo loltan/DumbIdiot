@@ -133,6 +133,11 @@ function obj:runChecks()
 		allGood = false
 	end
 
+	if not self:isHostsFileClean() then
+		table.insert(menuItems, {title = "‼️ Non-standard /etc/hosts entries present"})
+		allGood = false
+	end
+
 	self:updateMenubar(menuItems, allGood)
 
 	if ((not allGood) and (not obj.snooze)) then
@@ -307,5 +312,20 @@ function obj:applicationCheck(applicationName)
 		return false
 	end
 end
+
+
+function obj:isHostsFileClean()
+	--can't believe LUA doesn't have a "continue" control flow
+	for line in io.lines("/etc/hosts") do
+		if line:sub(1,1) == '#' then
+		elseif string.find(line, "127.0.0.1", 0, true) then
+		elseif string.find(line, "255.255.255.255", 0, true) then
+		elseif string.find(line, "::1", 0, true) then
+		else
+			return false
+		end
+	end
+	return true
+end	
 
 return obj
