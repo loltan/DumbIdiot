@@ -1,5 +1,5 @@
 -------------------------------------------------------------------------
---							 Dumb Idiot 							   --
+--                          Dumb Idiot                                 --
 -- Dumb Idiot - a tool to check for common hardening misconfigurations --
 -------------------------------------------------------------------------
 
@@ -77,18 +77,23 @@ function obj:runChecks()
 	-- Probably not a good check in case the SSH port number is changed in /etc/ssh/sshd_conf, but 
 	-- as the sshd is only started by launchd when a connection is received, this is a good enough
 	-- first pass
-	if self:portCheck("22") then
+	if self:portCheckTcp("22") then
 		table.insert(menuItems, {title = "‼️ Remote login is enabled"})
 		allGood = false
 	end
 	
 	-- Same as above, just with VNC.
-	if self:portCheck("5900") then
+	if self:portCheckTcp("5900") then
 		table.insert(menuItems, {title = "‼️ Screen sharing/remote managmenet is enabled"})
 		allGood = false
 	end
+	
+	if self:portCheckUdp("69") then
+		table.insert(menuItems, {title = "‼️ TFTP is enabled"})
+		allGood = false
+	end
 
-	if (self:portCheck("88") and self:portCheck("445")) then
+	if (self:portCheckTcp("88") and self:portCheckTcp("445")) then
 		table.insert(menuItems, {title = "‼️ File sharing is enabled"})
 		allGood = false
 	end
@@ -234,8 +239,17 @@ function obj:processCheck(processName)
 	end
 end
 
-function obj:portCheck(portNumber)
-	_, result = hs.execute("netstat -an | grep LISTEN | grep /."..portNumber)
+function obj:portCheckTcp(portNumber)
+	_, result = hs.execute("netstat -anp tcp | grep LISTEN | grep /."..portNumber)
+	if result then
+		return true
+	else
+		return false
+	end
+end	
+
+function obj:portCheckUdp(portNumber)
+	_, result = hs.execute("netstat -anp udp | grep LISTEN | grep /."..portNumber)
 	if result then
 		return true
 	else
