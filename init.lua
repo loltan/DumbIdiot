@@ -127,6 +127,16 @@ function obj:runChecks()
 		table.insert(menuItems, {title = "‼️ Manual IP address is set"})
 		allGood = false
 	end
+	
+	if not self:isDirEmpty("/etc/resolver") then
+		table.insert(menuItems, {title = "‼️ Hardcoded /etc/resolver entries present"})
+		allGood = false
+	end
+
+	if not self:isHostsFileClean() then
+		table.insert(menuItems, {title = "‼️ Non-standard /etc/hosts entries present"})
+		allGood = false
+	end
 
 	self:updateMenubar(menuItems, allGood)
 
@@ -275,6 +285,15 @@ function obj:checkFileVault()
 	end
 end
 
+function obj:isDirEmpty(path)
+	result = hs.execute("ls "..path)
+	if result == nil or result == '' then
+		return true
+	else
+		return false
+	end
+end
+
 function obj:checkGuestAccount()
 	resultLogin = string.sub(hs.execute("defaults read /Library/Preferences/com.apple.loginwindow GuestEnabled"), 1, 1)
 	resultShareSMB = string.sub(hs.execute("defaults read /Library/Preferences/SystemConfiguration/com.apple.smb.server.plist AllowGuestAccess"), 1, 1)
@@ -293,5 +312,20 @@ function obj:applicationCheck(applicationName)
 		return false
 	end
 end
+
+
+function obj:isHostsFileClean()
+	--can't believe LUA doesn't have a "continue" control flow
+	for line in io.lines("/etc/hosts") do
+		if line:sub(1,1) == '#' then
+		elseif string.find(line, "127.0.0.1", 0, true) then
+		elseif string.find(line, "255.255.255.255", 0, true) then
+		elseif string.find(line, "::1", 0, true) then
+		else
+			return false
+		end
+	end
+	return true
+end	
 
 return obj

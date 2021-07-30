@@ -20,6 +20,8 @@ Currently the following checks are implemented:
 11. File sharing
 12. Check for static IPs on all network services
 13. TFTP check
+14. /etc/resolver entry check
+15. /etc/hosts entry check
 
 # Features
 - Periodic checks: By default Dumb Idiot runs its set of checks every 30 minutes.
@@ -33,7 +35,7 @@ First you need Hammerspoon (https://www.hammerspoon.org/).
 
 Then just drop the unzipped release (DumbIdiot.spoon) in the ~/.hammerspoon/Spoons folder.
 
-Finally, edit your init.lua in ~/.hammerspoon to include the following two lines to start using Dumb Idiot:
+Finally, edit your init.lua in ~/.hammerspoon (create it if it doesn't exist) to include the following two lines to start using Dumb Idiot:
 ```lua 
 hs.loadSpoon("DumbIdiot")
 spoon.DumbIdiot:bindHotKeys({runChecks = {{"ctrl", "alt", "cmd"}, "c"}})
@@ -45,8 +47,6 @@ To get the full value of Dumb Idiot notifications set Hammerspoon's notification
 
 # Planned checks and features
 - TCC settings
-- Hosts file entries
-- /etc/resolver entries
 - VPN check
 - More modular checks (each check will be its own file)
 - Config file instead of global variables
