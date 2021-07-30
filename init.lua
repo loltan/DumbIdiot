@@ -1,7 +1,7 @@
---- === Dumb Idiot === ---
----
---- Dumb Idiot - a tool to check for common hardening misconfigurations
-
+-------------------------------------------------------------------------
+--							 Dumb Idiot 							   --
+-- Dumb Idiot - a tool to check for common hardening misconfigurations --
+-------------------------------------------------------------------------
 
 local obj = {}
 obj.__index = obj
@@ -10,7 +10,7 @@ obj.__index = obj
 -- Metadata --
 --------------
 obj.name = "DumbIdiot"
-obj.version = "0.2"
+obj.version = "0.2.1"
 obj.author = "Zoltan Madarassy @loltan"
 obj.homepage = "https://github.com/loltan/DumbIdiot"
 obj.license = "MIT - https://opensource.org/licenses/MIT"
@@ -40,8 +40,6 @@ function obj:init()
 	self:runChecks()
  	checkTimer = hs.timer.new((obj.checkTimer * 60), function() self:runChecks() end)
  	checkTimer:start()
- 	pasteboardTimer = hs.timer.doEvery((obj.pasteboardTimer * 60), function() self:clearPasteboard() end)
- 	pasteboardTimer:start()
 end
 
 function obj:bindHotKeys(mapping)
@@ -60,12 +58,6 @@ end
 function obj:runChecks()
 	menuItems = {}
 	allGood = true
-	
-	if obj.periodicallyClearPasteboard then 
-		table.insert(menuItems, {title = "✅ Automatically clear pasteboard", fn = function() obj.periodicallyClearPasteboard = false end})
-	else
-		table.insert(menuItems, {title = "❌ Automatically clear pasteboard", fn = function() obj.periodicallyClearPasteboard = true end})
-	end
 	
 	if self:applicationCheck("Docker") then
 		table.insert(menuItems, {title = "‼️ Docker is running"})
@@ -116,7 +108,7 @@ function obj:runChecks()
 		allGood = false
 	end
 
-	if not self:checkGuestAccount() then
+	if self:checkGuestAccount() then
 		table.insert(menuItems, {title = "‼️ Guest account is enabled"})
 		allGood = false
 	end
@@ -151,7 +143,7 @@ function obj:sendNotification()
 	hs.notify.register("Snooze", function() self:snoozeNotifications() end)
 	alert = hs.notify.new(function() self:snoozeNotifications() end)
 	alert:title("Dumb Idiot alert")
-	alert:subTitle("Shit ain't so funky, click the ambulance!")
+	alert:subTitle("Things ain't so funky, click the ambulance!")
 	alert:hasActionButton(true)
 	alert:actionButtonTitle("Snooze")
 	alert:withdrawAfter(0)
@@ -163,7 +155,6 @@ function obj:updateMenubar(menuItems, allGood)
 	self.menu:setMenu(menuItems)
 	if not allGood then
 		self.menu:setTitle("🚑")
-		--hs.notify.show("Dumb Idiot alert", "", "Things ain't so funky")
 	else
 		self.menu:setTitle("😎")
 	end
@@ -184,7 +175,6 @@ function obj:manualIPcheck()
 		if #proxySettings ~= 0 then
 			happy = false
 			table.insert(offendingNetworkServices, networkServices[service])
-			hs.alert.show(networkServices[service])
 		end
 	end
 
@@ -245,11 +235,11 @@ function obj:processCheck(processName)
 end
 
 function obj:portCheck(portNumber)
-	_, result = hs.execute("netstat -an | grep LISTEN | grep ."..portNumber)
+	_, result = hs.execute("netstat -an | grep LISTEN | grep /."..portNumber)
 	if result then
 		return true
 	else
-		return false 
+		return false
 	end
 end	
 
@@ -274,7 +264,7 @@ end
 function obj:checkGuestAccount()
 	resultLogin = string.sub(hs.execute("defaults read /Library/Preferences/com.apple.loginwindow GuestEnabled"), 1, 1)
 	resultShareSMB = string.sub(hs.execute("defaults read /Library/Preferences/SystemConfiguration/com.apple.smb.server.plist AllowGuestAccess"), 1, 1)
-	if ((resultLogin == "0") and (resultShareSMB == "0")) then
+	if ((resultLogin == "1") or (resultShareSMB == "1")) then
 		return true
 	else
 		return false
@@ -287,13 +277,6 @@ function obj:applicationCheck(applicationName)
 		return true
 	else 
 		return false
-	end
-end
-
-function obj:clearPasteboard()
-	if periodicallyClearPasteboard then
-		hs.pasteboard.clearContents()
-		hs.notify.show("Dumb Idiot alert", "", "Pasteboard cleared")
 	end
 end
 

@@ -1,4 +1,4 @@
-# DumbIdiot
+# Dumb Idiot
 Your best is still an idiot.
 
 Dumb Idiot is a Hammerspoon port of snare's idiot (https://github.com/snare/idiot) MacOS tool for reminding you not to be stupid with additional checks. 
@@ -17,9 +17,8 @@ Currently the following checks are implemented:
 8. Guest account enabled
 9. Screen sharing
 10. System proxy
-11. Clear pasteboard periodically
-12. File sharing
-13. Check for static IPs on all network services
+11. File sharing
+12. Check for static IPs on all network services
 
 # Features
 - Periodic checks: By default Dumb Idiot runs its set of checks every 30 minutes.
