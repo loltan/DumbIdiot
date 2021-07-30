@@ -19,6 +19,7 @@ Currently the following checks are implemented:
 10. System proxy
 11. File sharing
 12. Check for static IPs on all network services
+13. TFTP check
 
 # Features
 - Periodic checks: By default Dumb Idiot runs its set of checks every 30 minutes.
@@ -43,9 +44,9 @@ This will load Dumb Idiot and set the hotkey ```⌃ + ⌥ + ⌘ + c``` to manual
 To get the full value of Dumb Idiot notifications set Hammerspoon's notification style to 'Alerts' in System Preferences -> Notifications -> Hammerspoon
 
 # Planned checks and features
-- TFTP check
 - TCC settings
 - Hosts file entries
+- /etc/resolver entries
 - VPN check
 - More modular checks (each check will be its own file)
 - Config file instead of global variables
