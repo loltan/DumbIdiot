@@ -127,6 +127,11 @@ function obj:runChecks()
 		table.insert(menuItems, {title = "‼️ Manual IP address is set"})
 		allGood = false
 	end
+	
+	if not self:isDirEmpty("/etc/resolver") then
+		table.insert(menuItems, {title = "‼️ Hardcoded /etc/resolver entries present"})
+		allGood = false
+	end
 
 	self:updateMenubar(menuItems, allGood)
 
@@ -269,6 +274,15 @@ end
 function obj:checkFileVault()
 	_, result = hs.execute("fdesetup status | grep On")
 	if result then
+		return true
+	else
+		return false
+	end
+end
+
+function obj:isDirEmpty(path)
+	result = hs.execute("ls "..path)
+	if result == nil or result == '' then
 		return true
 	else
 		return false
