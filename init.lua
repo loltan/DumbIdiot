@@ -1,5 +1,5 @@
 -------------------------------------------------------------------------
---							 Dumb Idiot 							   --
+--                          Dumb Idiot                                 --
 -- Dumb Idiot - a tool to check for common hardening misconfigurations --
 -------------------------------------------------------------------------
 
@@ -93,7 +93,7 @@ function obj:runChecks()
 		allGood = false
 	end
 
-	if (self:portCheckTcp("88") or self:portCheckTcp("445")) then
+	if (self:portCheckTcp("88") and self:portCheckTcp("445")) then
 		table.insert(menuItems, {title = "‼️ File sharing is enabled"})
 		allGood = false
 	end
