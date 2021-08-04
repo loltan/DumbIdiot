@@ -22,6 +22,7 @@ Currently the following checks are implemented:
 13. TFTP check
 14. /etc/resolver entry check
 15. /etc/hosts entry check
+16. macOS security updates pending (disabled by default as it adds a 10 second delay)
 
 # Features
 - Periodic checks: By default Dumb Idiot runs its set of checks every 30 minutes.
