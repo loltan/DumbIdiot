@@ -10,7 +10,7 @@ obj.__index = obj
 -- Metadata --
 --------------
 obj.name = "DumbIdiot"
-obj.version = "v1.0"
+obj.version = "v1.2"
 obj.author = "Zoltan Madarassy @loltan"
 obj.homepage = "https://github.com/loltan/DumbIdiot"
 obj.license = "MIT - https://opensource.org/licenses/MIT"
@@ -41,12 +41,7 @@ function obj:init()
 		print(err)
 	end
 
-	-- TODO: Based on the menubarAlwaysShow setting only show the ambulance when a check fails
-	self.menu = hs.menubar.new(obj.config["settings"].menubarAlwaysShow)
-	if not obj.config["settings"].menubarAlwaysShow then
-		self.menu:removeFromMenuBar()
- 	end
-
+	self.menu = hs.menubar.new()
 	self:start()
 end
 
@@ -82,7 +77,6 @@ function obj:snoozeNotifications(checkName)
 		for i, v in ipairs(obj.config["checks"]) do
 			if obj.config["checks"][i].name == checkName then
 				obj.config["checks"][i].snoozed = true
-				print(obj.config["checks"][i].name .. " snoozed")
 			end
 		end
 	
@@ -102,12 +96,18 @@ function obj:sendNotification(checkName, errorMessage)
 end
 
 function obj:updateMenubar(menuItems, allGood)
-	self.menu:setMenu(menuItems)
+	if not obj.config["settings"].menubarAlwaysShow then
+		self.menu:removeFromMenuBar()
+	end
+	
 	if not obj.allGood then
+		self.menu:returnToMenuBar()
 		self.menu:setTitle("🚑")
-	else
+	elseif obj.config["settings"].menubarAlwaysShow then
 		self.menu:setTitle("😎")
 	end
+	
+	self.menu:setMenu(menuItems)
 end
 
 ----------------
@@ -137,7 +137,6 @@ function obj:runChecks()
 	if obj.allGood then
 		for i, v in ipairs(obj.config["checks"]) do
 			obj.config["checks"][i].snoozed = false
-			print(obj.config["checks"][i].name .. " unsnoozed")
 		end
 	end
 
