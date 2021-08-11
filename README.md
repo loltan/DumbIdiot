@@ -35,7 +35,7 @@ Currently the following checks are implemented:
 
 # Installation
 1. First you need Hammerspoon (https://www.hammerspoon.org/).
-2. Then just drop the unzipped release (DumbIdiot.spoon) in the ```~/.hammerspoon/Spoons``` folder.
+2. Then just drop the unzipped release (DumbIdiot.spoon, see "Releases"  on the right) in the ```~/.hammerspoon/Spoons``` folder.
 3. Next, add the checks directory and the ```dumbidiot.conf``` to ```~/.hammerspoon```.
 4. Finally, edit your ```init.lua``` in ```~/.hammerspoon``` (create it if it doesn't exist) to include the following two lines to start using Dumb Idiot:
     ```lua 
