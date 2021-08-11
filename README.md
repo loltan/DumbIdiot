@@ -56,7 +56,7 @@ Controls whether the cool guy emoji is shown. If set to ```false``` only the amb
 ### startEnabled
 If set to false, Dumb Idiot will not perform checks periodically. Pressing the chosen hotkey combination still runs the checks however. 
 
-### checkTimer = 30
+### checkTimer
 The time interval when the enabled checks are run in the background, in minutes.
 
 ## Checks
