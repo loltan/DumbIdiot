@@ -68,11 +68,12 @@ return check
 Next, add a line to the checks table in ```dumbidiot.conf``` such as:
 ``` lua
 checks = {
-    { name = "yourChecksNameInCamelCase", enabled = true },
+    { name = "yourChecksNameInCamelCase", enabled = true, snoozed = false },
 }
 ```
 
 It's important that the .lua file's name and the new check line in the config are the same.
+The snoozed attribute should be false by default, it's an internal variable for notifications, dynamically updated by Dumb Idiot when needed.
 
 Finally, just reload your Hammerspoon config and you should be good to go.
 
