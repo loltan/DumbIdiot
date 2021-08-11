@@ -20,7 +20,6 @@ obj.license = "MIT - https://opensource.org/licenses/MIT"
 -------------------------------
 -- TODO: add a hotkey to toggle checks
 obj.startEnabled = true
-obj.snooze = false
 -- BUG: the . in DumbIdiot.spoon doesn't seem to cooperate with require() so I can't put
 -- the config file or the checks in the Spoon itself right now. Figure out why.
 obj.configDir = hs.configdir .. "/Spoons/DumbIdiot.spoon"
@@ -47,7 +46,7 @@ function obj:init()
 	if not obj.config["settings"].menubarAlwaysShow then
 		self.menu:removeFromMenuBar()
  	end
-	
+
 	self:start()
 end
 
@@ -77,18 +76,24 @@ end
 ----------------------
 -- Helper functions --
 ----------------------
-function obj:snoozeNotifications()
+function obj:snoozeNotifications(checkName)
 	if (not obj.allGood) then
-		obj.snooze = true
-		hs.alert.show("Dumb Idiot notifications snoozed")
+		
+		for i, v in ipairs(obj.config["checks"]) do
+			if obj.config["checks"][i].name == checkName then
+				obj.config["checks"][i].snoozed = true
+				print(obj.config["checks"][i].name .. " snoozed")
+			end
+		end
+	
 	end
 end
 
-function obj:sendNotification()
-	hs.notify.register("Snooze", function() self:snoozeNotifications() end)
-	alert = hs.notify.new(function() self:snoozeNotifications() end)
+function obj:sendNotification(checkName, errorMessage)
+	hs.notify.register("Snooze", function() self:snoozeNotifications(checkName) end)
+	alert = hs.notify.new(function() self:snoozeNotifications(checkName) end)
 	alert:title("Dumb Idiot alert")
-	alert:subTitle("Things ain't so funky, click the ambulance!")
+	alert:subTitle(errorMessage)
 	alert:hasActionButton(true)
 	alert:actionButtonTitle("Snooze")
 	alert:withdrawAfter(0)
@@ -119,6 +124,9 @@ function obj:runChecks()
 			result, errorString = check.runCheck()
 			if not result then
 				table.insert(menuItems, {["title"]=errorString})
+				if not obj.config["checks"][i].snoozed then
+					self:sendNotification(obj.config["checks"][i].name, errorString)
+				end
 				obj.allGood = false
 			end
 		end
@@ -127,12 +135,12 @@ function obj:runChecks()
 	self:updateMenubar(menuItems, obj.allGood)
 
 	if obj.allGood then
-		obj.snooze = false
+		for i, v in ipairs(obj.config["checks"]) do
+			obj.config["checks"][i].snoozed = false
+			print(obj.config["checks"][i].name .. " unsnoozed")
+		end
 	end
 
-	if ((not obj.allGood) and (not obj.snooze)) then
-		self:sendNotification()
-	end
 end
 
 return obj
