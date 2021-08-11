@@ -26,7 +26,7 @@ Currently the following checks are implemented:
 
 # Features
 - Periodic checks: By default Dumb Idiot runs its set of checks every 30 minutes.
-- Notifications: Dumb Idiot will send a persistent notification (until dismissed or snoozed) to the Notification Center. Clicking on the body or the snooze button will disable notifications until the issues are resolved.
+- Notifications: Dumb Idiot will send a persistent notification (until dismissed or snoozed) to the Notification Center for each failed check. Clicking on the body or the snooze button will disable notifications until the issues are resolved.
 - Menubar icon: If everything is going well, the menubar will have a cool guy emoji, but if issues are found, an ambulance will arrive. Clicking on the ambulance tells you which checks failed via the drop down menu items.
 - Read-only, low privileged user checks: all checks are read-only using low-privileged access (no root or sudo)
 - Hot keys: Optionally a MacOS global key combination can be set to run the checks manually (see instructions below)
@@ -53,9 +53,7 @@ Each check is its own file. If you want to add a new one, just create a new .lua
 local check = {}
 
 function check.runCheck()
-	--------------------------
     -- YOUR CODE COMES HERE --
-    --------------------------
     if checkPasses then
         -- Your check needs to return true if it passes
         return true
