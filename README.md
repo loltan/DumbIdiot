@@ -1,7 +1,7 @@
 # Dumb Idiot
-Your best is still an idiot.
+**Your best is still an idiot.**
 
-Dumb Idiot is a Hammerspoon port of snare's idiot (https://github.com/snare/idiot) MacOS tool for reminding you not to be stupid with additional checks. 
+Dumb Idiot is a Hammerspoon port of snare's idiot (https://github.com/snare/idiot) to remind you not to be stupid. Dumb Idiot's contribution is support for even more checks.
 
 The tool is mostly designed for people who harden their devices but sometimes poke holes in their hardening for a quick test and then forget to turn them back on. 
 
@@ -35,9 +35,8 @@ Currently the following checks are implemented:
 
 # Installation
 1. First you need Hammerspoon (https://www.hammerspoon.org/).
-2. Then just drop the unzipped release (DumbIdiot.spoon) in the ```~/.hammerspoon/Spoons``` folder.
-3. Next, add the checks directory and the ```dumbidiot.conf``` to ```~/.hammerspoon```.
-4. Finally, edit your ```init.lua``` in ```~/.hammerspoon``` (create it if it doesn't exist) to include the following two lines to start using Dumb Idiot:
+2. Then just run ```install.sh ``` which will copy all the required files to your Hammerspoon directory
+3. Finally, edit your ```init.lua``` in ```~/.hammerspoon``` (create it if it doesn't exist) to include the following two lines to start using Dumb Idiot:
     ```lua 
     hs.loadSpoon("DumbIdiot")
     spoon.DumbIdiot:bindHotKeys({runChecks = {{"ctrl", "alt", "cmd"}, "c"}})
@@ -56,7 +55,7 @@ Controls whether the cool guy emoji is shown. If set to ```false``` only the amb
 ### startEnabled
 If set to false, Dumb Idiot will not perform checks periodically. Pressing the chosen hotkey combination still runs the checks however. 
 
-### checkTimer = 30
+### checkTimer
 The time interval when the enabled checks are run in the background, in minutes.
 
 ## Checks
@@ -66,6 +65,11 @@ Controls whether the check is run either automatically or when the hotkeys are p
 
 ### snoozed
 A required attribute for new checks, however it should be set to ```false```. This controls the notifications dynamically while Dumb Idiot is running.
+
+### allow 
+A lua table with a list of allowlisted items. For example, you can add your known list of entries in the ```/etc/hosts``` file so Dumb Idiot won't alert on them. 
+
+**Pro tip**: do not use this for temporary entries, otherwise Dumb Idiot loses its purpose and its name will apply to you.
 
 # Adding your own check
 Each check is its own file. If you want to add a new one, just create a new .lua file using the following template and put it next to the other checks in the ```checks``` folder:
@@ -84,6 +88,11 @@ function check.runCheck()
 end
 
 return check
+```
+
+In case the check you're adding has an allowlist in the config, the function prototype becomes:
+``` lua
+function check.runCheck(allowlist)
 ```
 
 Next, add a line to the checks table in ```dumbidiot.conf``` such as:

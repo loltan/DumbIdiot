@@ -121,7 +121,13 @@ function obj:runChecks()
 		checkString = "checks." .. obj.config["checks"][i].name
 		if obj.config["checks"][i].enabled then
 			check = require(checkString)
-			result, errorString = check.runCheck()
+			print("running check" .. checkString)
+			if obj.config["checks"][i].allow == nil then
+				result, errorString = check.runCheck()
+			else
+				allowList = obj.config["checks"][i].allow
+				result, errorString = check.runCheck(allowList)
+			end
 			if not result then
 				table.insert(menuItems, {["title"]=errorString})
 				if not obj.config["checks"][i].snoozed then

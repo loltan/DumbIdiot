@@ -1,7 +1,7 @@
 local check = {}
 
 function check.runCheck()
-    _, result = hs.execute("softwareupdate -l | grep -i security")
+    _, result = hs.execute("softwareupdate -l | grep -i 'macos'")
     if result then 
         return false, "‼️ Security updates are available"
     else
