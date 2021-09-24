@@ -36,12 +36,13 @@ Currently the following checks are implemented:
 # Installation
 1. First you need Hammerspoon (https://www.hammerspoon.org/).
 2. Then just run ```install.sh ``` which will copy all the required files to your Hammerspoon directory
-3. Finally, edit your ```init.lua``` in ```~/.hammerspoon``` (create it if it doesn't exist) to include the following two lines to start using Dumb Idiot:
+3. Next, edit your ```init.lua``` in ```~/.hammerspoon``` (create it if it doesn't exist) to include the following two lines to start using Dumb Idiot:
     ```lua 
     hs.loadSpoon("DumbIdiot")
     spoon.DumbIdiot:bindHotKeys({runChecks = {{"ctrl", "alt", "cmd"}, "c"}})
     ```
     This will load Dumb Idiot and set the hotkey ```⌃ + ⌥ + ⌘ + c``` to manually run all checks. 
+4. Finally, reload your Hammerspoon config.
 
 To get the full value of Dumb Idiot notifications, set Hammerspoon's notification style to 'Alerts' in System Preferences -> Notifications -> Hammerspoon
 
