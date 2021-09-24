@@ -68,9 +68,14 @@ Controls whether the check is run either automatically or when the hotkeys are p
 A required attribute for new checks, however it should be set to ```false```. This controls the notifications dynamically while Dumb Idiot is running.
 
 ### allow 
-A lua table with a list of allowlisted items. For example, you can add your known list of entries in the ```/etc/hosts``` file so Dumb Idiot won't alert on them. 
+A lua table with a list of allowlisted items. For example, you can add your known list of entries in the ```/etc/hosts``` file so Dumb Idiot won't alert on them. You can add either an IP address or a hostname.
 
-**Pro tip**: do not use this for temporary entries, otherwise Dumb Idiot loses its purpose and its name will apply to you.
+**WARNING**: If the hostname you're adding has a hyphen (-) in it, make sure to escape it with '%', otherwise ```string.find()``` will fail (Lua patterns amirite...).
+
+For example if the hostname is ```scrooge-mcduck``` then this should be your allowlist entry: ```"scrooge%-mcduck"```
+
+**Pro tip 2**: do not use this for temporary entries, otherwise Dumb Idiot loses its purpose and its name will apply to you.
+
 
 # Adding your own check
 Each check is its own file. If you want to add a new one, just create a new .lua file using the following template and put it next to the other checks in the ```checks``` folder:
