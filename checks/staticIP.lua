@@ -17,7 +17,7 @@ function check.runCheck()
 	if happy then
 		return true
 	else
-		return false, "‼️ System-wide web proxy is on"
+		return false, "‼️ Static network configuration on interface"
 	end
 end
 
